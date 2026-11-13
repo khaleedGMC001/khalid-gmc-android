@@ -1,0 +1,45 @@
+
+name: Build Khalid GMC APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Prepare web folder
+        run: |
+          mkdir -p www
+          echo '<!doctype html><html><head><meta name="viewport" content="width=device-width, initial-scale=1"></head><body><script>location.replace("https://khalid-gmc-ujlt2m.v2.appdeploy.ai/");</script></body></html>' > www/index.html
+
+      - name: Add Android platform
+        run: npx cap add android
+
+      - name: Build debug APK
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: khalid-gmc-debug-apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          
