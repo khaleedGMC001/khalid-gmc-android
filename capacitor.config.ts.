@@ -1,0 +1,14 @@
+
+import type { CapacitorConfig } from '@capacitor/cli';
+
+const config: CapacitorConfig = {
+  appId: 'com.khaleed.gmc',
+  appName: 'Khalid GMC',
+  webDir: 'www',
+  server: {
+    url: 'https://khalid-gmc-ujlt2m.v2.appdeploy.ai/',
+    cleartext: false
+  }
+};
+
+export default config;
